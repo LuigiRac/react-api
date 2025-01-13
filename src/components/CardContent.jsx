@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import posts from "../data/posts"
 const newPost = {
     id: 0,
