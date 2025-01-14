@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import posts from "../data/posts"
+
+// import posts from "../data/posts"
 const newPost = {
     id: 0,
     title: "",
@@ -10,8 +11,8 @@ const newPost = {
 };
 import AddPost from "./AddPost";
 
-function CardContent() {
-    const [postsList, setPostList] = useState(posts)
+function CardContent({ postsList }) {
+    // const [postsList, setPostList] = useState(posts)
     const [formData, setFormData] = useState(newPost)
 
 
