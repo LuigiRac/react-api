@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from 'axios';
 
 // import posts from "../data/posts"
 const newPost = {
@@ -12,12 +13,14 @@ const newPost = {
 import AddPost from "./AddPost";
 
 function CardContent({ postsList }) {
-    // const [postsList, setPostList] = useState(posts)
+    const [postList, setPostList] = useState([])
     const [formData, setFormData] = useState(newPost)
-
+    useEffect(() => {
+        setPostList(postsList);
+    }, [postsList])
 
     function deletePost(id) {
-        setPostList(posts.filter((el) => el.id !== id))
+        setPostList(postList.filter((el) => el.id !== id))
     }
 
     function handleInput(e) {
@@ -26,11 +29,25 @@ function CardContent({ postsList }) {
     }
     function handleSubmit(e) {
         e.preventDefault();
-        // console.log(formData);
-        setPostList([...posts, { id: self.crypto.randomUUID(), ...formData }]);
-        setFormData(newPost)
-        // console.log(id);
-        // console.log(e);
+        console.log(formData);
+
+
+
+        const newPost = { id: crypto.randomUUID(), ...formData };
+        console.log(newPost);
+
+
+
+        axios.post("http://localhost:3000/posts", newPost)
+            .then((response) => {
+                console.log(response.data);
+
+                setPostList([...postList, response.data]);
+                setFormData(newPost);
+            })
+            .catch((error) => {
+                console.error("Errore durante l'invio del post al server:", error);
+            });
 
 
     }
@@ -42,7 +59,7 @@ function CardContent({ postsList }) {
         <>
             <div className="d-flex justify-content-center gap-3 m-4">
                 {
-                    postsList.map((posts) => posts.published && (
+                    postList.map((posts) => posts.published && (
                         <div className="card" style={{ width: '18rem' }} key={posts.id}>
                             <img className="card-img-top" src={posts.image} alt={posts.title}></img>
                             <div className="card-body">
