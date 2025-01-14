@@ -20,8 +20,19 @@ function CardContent({ postsList }) {
     }, [postsList])
 
     function deletePost(id) {
-        setPostList(postList.filter((el) => el.id !== id))
+
+        axios
+            .delete(`http://localhost:3000/posts/${id}`)
+            .then(() => {
+
+                setPostList(postList.filter((el) => el.id !== id))
+
+            })
+            .catch((error) => {
+                console.error("Errore durante l'eliminazione del post al server:", error);
+            });
     }
+
 
     function handleInput(e) {
         const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
@@ -40,7 +51,7 @@ function CardContent({ postsList }) {
 
         axios.post("http://localhost:3000/posts", newPost)
             .then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
 
                 setPostList([...postList, response.data]);
                 setFormData(newPost);
